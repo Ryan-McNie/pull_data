@@ -24,12 +24,8 @@ WORKDIR /app
 
 # Copy only what you need, setting executable bits at copy time
 # and normalize line-endings for shell scripts.
-# (The 'sed' step removes CR if present.)
 COPY --chmod=755 ./scripts/entrypoint.sh /app/scripts/entrypoint.sh
 COPY --chmod=755 scripts/ /app/scripts/
 COPY --chmod=644 . /app/
 
-# Ensure entrypoint has a proper shebang, e.g.:
-#   #!/usr/bin/env bash
-# (add that inside your entrypoint.sh file)
 ENTRYPOINT ["/app/scripts/entrypoint.sh"]
