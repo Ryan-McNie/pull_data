@@ -23,6 +23,7 @@ Create Docker group and add current user to docker group to remove sudo requirem
 sudo groupadd docker || true
 sudo usermod -aG docker $USER
 newgrp docker
+sudo systemctl restart docker
 ```
 
 
