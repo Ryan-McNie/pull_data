@@ -22,9 +22,6 @@ RUN set -eux; \
 
 WORKDIR /app
 
-# Copy only what you need, setting executable bits at copy time
-# and normalize line-endings for shell scripts.
-COPY --chmod=644 . /app/
-COPY --chmod=755 scripts/ /app/scripts/
+COPY . /app/
 
 ENTRYPOINT ["/app/scripts/entrypoint.sh"]

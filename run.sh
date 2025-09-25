@@ -1,9 +1,8 @@
-#!/bin/bash
-
-# Ensure output folder exists
+#!/usr/bin/env bash
+set -euo pipefail
 mkdir -p output
 
-# Run the container with volume mount and pass all arguments
 docker run --rm -it \
-  -v "$(pwd)/output":/output \
+  --user "$(id -u):$(id -g)" \
+  -v "$(pwd)/output":/app/output \
   pull_data "$@"
