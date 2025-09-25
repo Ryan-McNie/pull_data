@@ -86,23 +86,23 @@ fi
 PrevDOY=$(printf "%03d" $PrevDOY)
 
 # Define output directory
-localDir="$(pwd)/../output/$year/$DOY"
+localDir="$(pwd)/output/$year/$DOY"
 mkdir -p "$localDir"
 
 echo "Pulling $station_name for $DOY:$year"
 if [[ "$station_name" == KLTG* ]]; then
-    ./pull_data/pull_kltg_obs.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "$station_name" "$localDir"
-    ./manipulate_data/combine_rinex.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "KLTG" "$localDir"
+    ./scripts/pull_data/pull_kltg_obs.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "$station_name" "$localDir"
+    ./scripts/manipulate_data/combine_rinex.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "KLTG" "$localDir"
 
 else
     echo "Attempting to pull from NZ archive"
-    ./pull_data/pull_nz_obs.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "$station_name" "$localDir"
+    ./scripts/pull_data/pull_nz_obs.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "$station_name" "$localDir"
     exit_code=$?
     if [ "$exit_code" -eq 3 ]; then
         echo "Attempting to pull from AUS archive"
-        ./pull_data/pull_aus_obs.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "$station_name" "$localDir"
+        ./scripts/pull_data/pull_aus_obs.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "$station_name" "$localDir"
     fi
-    ./manipulate_data/combine_rinex.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "$station_name" "$localDir"
+    ./scripts/manipulate_data/combine_rinex.sh "$year" "$DOY" "$PrevYEAR" "$PrevDOY" "$station_name" "$localDir"
 
 fi
 

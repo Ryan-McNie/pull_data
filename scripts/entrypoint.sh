@@ -5,19 +5,16 @@ shift  # Shift arguments so $2 becomes $1, etc.
 
 case "$COMMAND" in
   pull_obs)
-    ./pull_obs-station_doy.sh "$@"
+    ./scripts/pull_obs-station_doy.sh "$@"
     ;;
   pull_sbas)
-    ./pull_sbas-doy.sh "$@"
+    ./scripts/pull_sbas-doy.sh "$@"
     ;;
   pull_nav)
-    ./pull_nav-doy.sh "$@"
+    ./scripts/pull_nav-doy.sh "$@"
     ;;
   copy_to_s3)
-    ./copy_to_s3-doy.sh "$@"
-    ;;
-  multi)
-    ./multi.sh "$@"
+    ./scripts/copy_to_s3-doy.sh "$@"
     ;;
   *)
     echo "Unknown command: $COMMAND"

@@ -83,7 +83,7 @@ fi
 PrevDOY=$(printf "%03d" $PrevDOY)
 
 # Define output directory
-localDir="$(pwd)/../output/$year/$DOY"
+localDir="$(pwd)/output/$year/$DOY"
 
 
 # Create a tar.gz archive

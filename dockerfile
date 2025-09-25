@@ -24,8 +24,7 @@ WORKDIR /app
 
 # Copy only what you need, setting executable bits at copy time
 # and normalize line-endings for shell scripts.
-COPY --chmod=755 ./scripts/entrypoint.sh /app/scripts/entrypoint.sh
-COPY --chmod=755 scripts/ /app/scripts/
 COPY --chmod=644 . /app/
+COPY --chmod=755 scripts/ /app/scripts/
 
 ENTRYPOINT ["/app/scripts/entrypoint.sh"]
