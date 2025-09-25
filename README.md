@@ -28,7 +28,7 @@ git clone https://github.com/Ryan-McNie/pull_data.git
 ```
 Build the docker image:
 ```bash
-docker build -t pull_data .
+sudo docker build -t pull_data .
 ```
 
 ## USAGE
