@@ -18,6 +18,12 @@ sudo apt-get update
 ```bash
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+Create Docker group and add current user to docker group to remove sudo requirement:
+```bash
+sudo groupadd docker || true
+sudo usermod -aG docker $USER
+newgrp docker
+```
 
 
 ## SETUP
