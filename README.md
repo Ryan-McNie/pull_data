@@ -32,6 +32,7 @@ sudo systemctl restart docker
 Pull from Git:
 ```bash
 git clone https://github.com/Ryan-McNie/pull_data.git
+cd pull_data
 ```
 Build the docker image:
 ```bash
