@@ -9,7 +9,7 @@ Build the docker image:
 docker build -t pull_data .
 ```
 
-## Usage
+## USAGE
 
 ### Date Formats
 
@@ -63,8 +63,6 @@ Includes both the previous day and the target day, and combines them.
 ```bash
 ./run.sh pull_nav 2025051
 ```
-
----
 
 ### 4. Copy Data to S3
 
