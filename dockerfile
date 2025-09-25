@@ -29,10 +29,7 @@ COPY --chmod=755 entrypoint.sh /app/entrypoint.sh
 COPY --chmod=755 scripts/ /app/scripts/
 COPY --chmod=644 . /app/
 
-# Normalize CRLF -> LF for any *.sh that may have Windows line endings
-RUN find /app -type f -name "*.sh" -exec sed -i 's/\r$//' {} +
-
 # Ensure entrypoint has a proper shebang, e.g.:
 #   #!/usr/bin/env bash
 # (add that inside your entrypoint.sh file)
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/app/scripts/entrypoint.sh"]

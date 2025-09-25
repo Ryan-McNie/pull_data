@@ -79,8 +79,8 @@ fi
 PrevDOY=$(printf "%03d" $PrevDOY)
 
 # Define output directory
-localDir="$(pwd)/output/$year/$DOY"
+localDir="$(pwd)/../output/$year/$DOY"
 mkdir -p "$localDir"
 
 # Pull and process navigation data
-python3 ./scripts/pull_data/pull_nav.py "$DOY" "$year" "$PrevDOY" "$PrevYEAR" "$localDir"
+python3 ./pull_data/pull_nav.py "$DOY" "$year" "$PrevDOY" "$PrevYEAR" "$localDir"
