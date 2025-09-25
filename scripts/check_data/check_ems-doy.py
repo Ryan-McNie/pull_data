@@ -67,5 +67,5 @@ if __name__ == "__main__":
         print("Usage: check_ems-doy.py <file_path> <YYYY-MM-DD>")
         sys.exit(2)
     rc = check_seconds(sys.argv[1], sys.argv[2])
-    print(rc)
+#    print(rc)
     sys.exit(rc)
