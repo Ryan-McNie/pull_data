@@ -8,6 +8,7 @@ localDir=$6
 
 station=$(echo "$station" | tr '[:upper:]' '[:lower:]')
 yy="${year: -2}"
+cd $localDir
 
 # Call python script with error handling
 python3 "../../../scripts/pull_data/gnss_archive.py" -1 "$PrevYEAR:$PrevDOY" "$station"
@@ -45,10 +46,9 @@ for file in ${localDir}/*; do
     fi
 done
 
-(
-cd $localDir
+
 python3 "../../../scripts/pull_data/gnss_archive.py" -1 "$year:$DOY" "$station"
-)
+
 
 echo
 total=$(ls -1 ${localDir}/*.gz 2>/dev/null | wc -l)
