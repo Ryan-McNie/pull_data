@@ -35,7 +35,7 @@ for file in "${files[@]}"; do
     percent=$((count * 100 / total))
     bar=$(printf "%-${percent}s" "#" | tr ' ' '#')
     printf "\rRemoving unused constellations: [%-100s] %d%%" "$bar" "$percent"
-    station_prefix=$(ls -1 ${localDir}/${station}* | head -n 1 | cut -c1-12)
+    station_prefix=$(ls -1 "${localDir}/${station}*" | head -n 1 | cut -c1-12)
 done
 
 #files=(${localDir}/${station}*O)
@@ -71,7 +71,7 @@ echo
 echo "15 minute files combined into daily file."
 
 # Delete older files
-rm -f ${localDir}/${station}*15M_01S_MO.RNX
-rm -f ${localDir}/${station}*01H_01S_MO.RNX
-rm -f ${localDir}/${station}*O
+#rm -f ${localDir}/${station}*15M_01S_MO.RNX
+#rm -f ${localDir}/${station}*01H_01S_MO.RNX
+#rm -f ${localDir}/${station}*O
 

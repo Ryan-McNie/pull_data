@@ -9,8 +9,6 @@ localDir=$6
 station=$(echo "$station" | tr '[:upper:]' '[:lower:]')
 yy="${year: -2}"
 
-cd "$localDir"
-
 # Call python script with error handling
 python3 "../../../scripts/pull_data/gnss_archive.py" -1 "$PrevYEAR:$PrevDOY" "$station"
 exit_code=$?
@@ -21,7 +19,7 @@ if [ "$exit_code" -eq 3 ]; then
 fi
 
 # Delete all previous day files that are not from the last 15 mins
-for file in *; do
+for file in ${localDir}/*; do
     filename=$(basename "$file")
     suffix="${filename: -6}"  # Gets the suffix (e.g., 'crx.gz' or '25d.gz')
 
@@ -47,12 +45,13 @@ for file in *; do
     fi
 done
 
-
-
+(
+cd $localDir
 python3 "../../../scripts/pull_data/gnss_archive.py" -1 "$year:$DOY" "$station"
+)
 
 echo
-total=$(ls -1 *.gz 2>/dev/null | wc -l)
+total=$(ls -1 ${localDir}/*.gz 2>/dev/null | wc -l)
 count=0
 
 for file in *.gz; do
@@ -64,11 +63,11 @@ for file in *.gz; do
 done
 echo
 
-total=$(ls -1 *d *.crx 2>/dev/null | wc -l)
+total=$(ls -1 ${localDir}/*d ${localDir}/*.crx 2>/dev/null | wc -l)
 count=0
 
-for file in *d *.crx; do
-    crx2rnx -d -f "$file" 2>/dev/null
+for file in ${localDir}/*d ${localDir}/*.crx; do
+    ./tools/CRX2RNX -d -f "$file" 2>/dev/null
     ((count++))
     percent=$((count * 100 / total))
     bar=$(printf "%-${percent}s" "#" | tr ' ' '#')
@@ -78,7 +77,7 @@ echo
 
 
 # Loop through all files in the directory to capitalise
-for file in *.rnx *o; do
+for file in ${localDir}/*.rnx ${localDir}/*o; do
     # Check if it's a file (not a directory)
     if [ -f "$file" ]; then
         # Get the uppercase version of the filename
