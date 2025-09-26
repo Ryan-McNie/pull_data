@@ -7,18 +7,12 @@ station=$5
 localDir=$6
 
 # Set fallback environment so lftp doesn't complain about missing user
-#export HOME="${TMPDIR}/home"
-#export USER="${USER:-dockeruser}"
-#mkdir -p "$HOME"
+export HOME="${TMPDIR}/home"
+export USER="${USER:-dockeruser}"
+mkdir -p "$HOME"
 
 
-#TMPDIR="${localDir}/tmp"
-#mkdir -p "$TMPDIR"
-
-
-#tmpfile="$(mktemp -p "$localDir" "${station}_lftp_XXXXXX.txt")"
-tmpfile="$(mktemp -p /tmp "${station}_lftp_XXXXXX.txt")"
-
+tmpfile="$(mktemp -p "$localDir" "${station}_lftp_XXXXXX.txt")"
 trap 'rm -f "$tmpfile"' EXIT
 
 # Create the lftp script
@@ -38,9 +32,9 @@ trap 'rm -f "$tmpfile"' EXIT
 
 count=0
 
-stdbuf -oL lftp -f "$tmpfile" 2>&1 | while read -r line; do
+lftp -f "$tmpfile" 2>&1 | while read -r line; do
   ((count++))
-  echo -ne "\rDownloading file #$count: ${line:0:100}"
+  echo -ne "\rDownloading file #$count: ${line:0:130}"
 done
 
 echo
