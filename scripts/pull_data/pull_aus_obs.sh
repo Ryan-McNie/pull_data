@@ -14,7 +14,11 @@ localDir=$6
 
 #TMPDIR="${localDir}/tmp"
 #mkdir -p "$TMPDIR"
-tmpfile="$(mktemp -p "$localDir" "${station}_lftp_XXXXXX.txt")"
+
+
+#tmpfile="$(mktemp -p "$localDir" "${station}_lftp_XXXXXX.txt")"
+tmpfile="$(mktemp -p /tmp "${station}_lftp_XXXXXX.txt")"
+
 trap 'rm -f "$tmpfile"' EXIT
 
 # Create the lftp script
@@ -33,10 +37,12 @@ trap 'rm -f "$tmpfile"' EXIT
 } > "$tmpfile"
 
 count=0
-lftp -f "$tmpfile" 2>&1 | while read -r line; do
+
+stdbuf -oL lftp -f "$tmpfile" 2>&1 | while read -r line; do
   ((count++))
-  echo -ne "\rDownloading file #$count: ${line:0:110}"
+  echo -ne "\rDownloading file #$count: ${line:0:100}"
 done
+
 echo
 
 total=$(ls -1 ${localDir}/*.gz 2>/dev/null | wc -l)
