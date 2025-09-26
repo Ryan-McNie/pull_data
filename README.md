@@ -36,7 +36,7 @@ cd pull_data
 ```
 Build the docker image:
 ```bash
-docker build -t pull_data .
+docker build --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t pull_data .
 ```
 
 ## USAGE
