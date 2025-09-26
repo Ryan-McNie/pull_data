@@ -18,7 +18,7 @@ case "$COMMAND" in
     ;;
   *)
     echo "Unknown command: $COMMAND"
-    echo "Available commands: pull_obs, pull_sbas, pull_nav, copy_to_s3, multi"
+    echo "Available commands: pull_obs, pull_sbas, pull_nav, copy_to_s3"
     exit 1
     ;;
 esac
