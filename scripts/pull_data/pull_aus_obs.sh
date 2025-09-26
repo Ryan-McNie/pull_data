@@ -7,15 +7,14 @@ station=$5
 localDir=$6
 
 # Set fallback environment so lftp doesn't complain about missing user
-export HOME="${TMPDIR}/home"
-export USER="${USER:-dockeruser}"
-mkdir -p "$HOME"
+#export HOME="${TMPDIR}/home"
+#export USER="${USER:-dockeruser}"
+#mkdir -p "$HOME"
 
 
-
-TMPDIR="${localDir}/tmp"
-mkdir -p "$TMPDIR"
-tmpfile="$(mktemp -p "$TMPDIR" "${station}_lftp_XXXXXX.txt")"
+#TMPDIR="${localDir}/tmp"
+#mkdir -p "$TMPDIR"
+tmpfile="$(mktemp -p "$localDir" "${station}_lftp_XXXXXX.txt")"
 trap 'rm -f "$tmpfile"' EXIT
 
 # Create the lftp script
@@ -23,7 +22,7 @@ trap 'rm -f "$tmpfile"' EXIT
  echo "set sftp:auto-confirm yes"
  echo "set xfer:clobber yes"
  echo "open -u anonymous,ryan.mcnie@linz.govt.nz sftp://sftp.data.gnss.ga.gov.au"
- echo "lcd ${localDir}/tmp"
+ echo "lcd ${localDir}"
  echo "cd /rinex/highrate/$PrevYEAR/$PrevDOY/23/"
  echo "mget ${station}*45_15M_01S_MO.crx.gz"
  for hour in $(seq -w 0 23); do
@@ -36,17 +35,16 @@ trap 'rm -f "$tmpfile"' EXIT
 count=0
 lftp -f "$tmpfile" 2>&1 | while read -r line; do
   ((count++))
-  echo -ne "\rDownloading file #$count: ${line:0:80}"
+  echo -ne "\rDownloading file #$count: ${line:0:110}"
 done
 echo
 
-echo
-total=$(ls -1 ${TMPDIR}/*.gz 2>/dev/null | wc -l)
+total=$(ls -1 ${localDir}/*.gz 2>/dev/null | wc -l)
 count=0
 
 
 
-for file in ${TMPDIR}/*.gz; do
+for file in ${localDir}/*.gz; do
     gzip -d -f "$file"
     ((count++))
     percent=$((count * 100 / total))
@@ -55,11 +53,11 @@ for file in ${TMPDIR}/*.gz; do
 done
 echo
 
-total=$(ls -1 ${TMPDIR}/*.crx 2>/dev/null | wc -l)
+total=$(ls -1 ${localDir}/*.crx 2>/dev/null | wc -l)
 count=0
 
-for file in ${TMPDIR}/*.crx; do
-    ./tools/crx2rnx -d -f "$file"
+for file in ${localDir}/*.crx; do
+    ./tools/CRX2RNX -d -f "$file"
     ((count++))
     percent=$((count * 100 / total))
     bar=$(printf "%-${percent}s" "#" | tr ' ' '#')
