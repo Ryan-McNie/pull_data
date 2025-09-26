@@ -25,3 +25,9 @@ WORKDIR /app
 COPY . /app/
 
 ENTRYPOINT ["/app/scripts/entrypoint.sh"]
+
+ARG UID=1000
+ARG GID=1000
+
+RUN groupadd -g $GID appgroup && \
+    useradd -m -u $UID -g $GID appuser
