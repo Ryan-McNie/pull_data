@@ -6,30 +6,40 @@ PrevDOY=$4
 station=$5
 localDir=$6
 
+# Set fallback environment so lftp doesn't complain about missing user
+export HOME="${TMPDIR}/home"
+export USER="${USER:-dockeruser}"
+mkdir -p "$HOME"
+
+
+
+TMPDIR="${localDir}/tmp"
+mkdir -p "$TMPDIR"
+tmpfile="$(mktemp -p "$TMPDIR" "${station}_lftp_XXXXXX.txt")"
+trap 'rm -f "$tmpfile"' EXIT
+
 # Create the lftp script
 {
-    echo "set sftp:auto-confirm yes"
-    echo "open -u anonymous,ryan.mcnie@linz.govt.nz sftp://sftp.data.gnss.ga.gov.au"
-    echo "lcd $localDir"
-    echo "cd /rinex/highrate/$PrevYEAR/$PrevDOY/23/"
-    echo "mget ${station}*45_15M_01S_MO.crx.gz"
-    for hour in $(seq -w 0 23); do
-        echo "cd /rinex/highrate/$year/$DOY/$hour/"
-        echo "mget ${station}*"
-    done
-    echo "bye"
-} > ${station}_lftp_script.txt
+ echo "set sftp:auto-confirm yes"
+ echo "open -u anonymous,ryan.mcnie@linz.govt.nz sftp://sftp.data.gnss.ga.gov.au"
+ echo "lcd ${localDir}/tmp"
+ echo "cd /rinex/highrate/$PrevYEAR/$PrevDOY/23/"
+ echo "mget ${station}*45_15M_01S_MO.crx.gz"
+ for hour in $(seq -w 0 23); do
+  echo "cd /rinex/highrate/$year/$DOY/$hour/"
+  echo "mget ${station}*"
+ done
+ echo "bye"
+} > "$tmpfile"
 
-# Execute the lftp script
-lftp -f ${station}_lftp_script.txt
+# Execute and cleanup (trap handles cleanup even on error)
+lftp -f "$tmpfile"
 
-# Clean up
-rm ${station}_lftp_script.txt
-
-cd $localDir
 echo
-total=$(ls -1 *.gz 2>/dev/null | wc -l)
+total=$(ls -1 $localDir/*.gz 2>/dev/null | wc -l)
 count=0
+
+
 
 for file in *.gz; do
     gzip -d -f "$file"

@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install base deps in one layer and clean
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-      curl unzip python3 lftp gzip tar ca-certificates \
+      curl unzip python3 lftp gzip tar ca-certificates openssh-client\
  && rm -rf /var/lib/apt/lists/*
 
 # Install AWS CLI v2 using Docker's TARGETARCH mapping
